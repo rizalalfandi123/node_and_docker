@@ -1,12 +1,17 @@
 version: '3.8'
 services:
+  nginx:
+    image: nginx
+    ports:
+      - 3000:80
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/nginx.conf:ro
+  
   node-app:
     build:
       context: .
       args:
         - NODE_ENV=development
-    ports:
-      - "3000:4000"
     volumes:
       - ./:/app
       - /app/node_modules
@@ -23,5 +28,9 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=test
     volumes:
       - mongo-db:/data/db
+
+  redis:
+    image: redis
+
 volumes:
   mongo-db:
